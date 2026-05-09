@@ -149,7 +149,7 @@ export default function handler(req, res) {
       "Set-Cookie",
       buildCookie(COOKIE_NAME, "", {
         maxAge: 0,
-        path: "/api",
+        path: "/",
         httpOnly: true,
         secure: true,
         sameSite: "Strict",

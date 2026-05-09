@@ -103,7 +103,7 @@ export default async function handler(req, res) {
     "Set-Cookie",
     buildCookie(COOKIE_NAME, COOKIE_VALUE, {
       maxAge: COOKIE_MAX_AGE_SECONDS,
-      path: "/api",
+      path: "/",
       httpOnly: true,
       secure: true,
       sameSite: "Strict",
