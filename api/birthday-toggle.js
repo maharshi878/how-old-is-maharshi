@@ -1,5 +1,6 @@
 const COOKIE_NAME = "birthday_mode";
 const COOKIE_VALUE = "enabled";
+const COOKIE_MAX_AGE_SECONDS = 300;
 
 function buildCookie(name, value, options = {}) {
   const parts = [`${name}=${encodeURIComponent(value)}`];
@@ -101,7 +102,7 @@ export default async function handler(req, res) {
   res.setHeader(
     "Set-Cookie",
     buildCookie(COOKIE_NAME, COOKIE_VALUE, {
-      maxAge: 300,
+      maxAge: COOKIE_MAX_AGE_SECONDS,
       path: "/api",
       httpOnly: true,
       secure: true,

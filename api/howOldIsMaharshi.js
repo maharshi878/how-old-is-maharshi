@@ -144,7 +144,7 @@ export default function handler(req, res) {
 
   const testMode = cookieValue === COOKIE_VALUE;
 
-  if (testMode) {
+  if (cookieValue !== undefined) {
     res.setHeader(
       "Set-Cookie",
       buildCookie(COOKIE_NAME, "", {
