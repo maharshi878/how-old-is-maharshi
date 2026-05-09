@@ -133,19 +133,29 @@
         setStatus("Arming birthday mode...");
 
         try {
-          const res = await fetch(
-            `/api/birthday-toggle?keyword=${encodeURIComponent(
-              keyword
-            )}`
-          );
-          const data = await res.json();
+          const res = await fetch("/api/birthday-toggle", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ keyword }),
+          });
 
-          if (data.success) {
+          let data = null;
+          try {
+            data = await res.json();
+          } catch (parseError) {
+            data = null;
+          }
+
+          if (res.ok && data?.success) {
             setStatus(
               "✅ Birthday mode enabled for the NEXT request only"
             );
           } else {
-            setStatus("❌ Invalid keyword");
+            setStatus(
+              data?.message || "❌ Invalid keyword"
+            );
           }
         } catch (error) {
           setStatus("❌ Something went wrong");
