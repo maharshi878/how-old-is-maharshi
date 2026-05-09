@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+      {
+        "source": "/how-old-is-maharshi",
+        "destination": "/api/how-old-is-maharshi"
+      }
+    ]
+  }
