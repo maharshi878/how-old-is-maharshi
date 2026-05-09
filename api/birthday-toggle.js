@@ -36,21 +36,28 @@ async function parseJsonBody(req) {
     return JSON.parse(req.body);
   }
 
-  const chunks = [];
-  for await (const chunk of req) {
-    chunks.push(chunk);
-  }
+  return await new Promise((resolve, reject) => {
+    let raw = "";
 
-  if (chunks.length === 0) {
-    return null;
-  }
+    req.on("data", (chunk) => {
+      raw += chunk;
+    });
 
-  const raw = Buffer.concat(chunks).toString("utf8");
-  if (!raw) {
-    return null;
-  }
+    req.on("end", () => {
+      if (!raw) {
+        resolve(null);
+        return;
+      }
 
-  return JSON.parse(raw);
+      try {
+        resolve(JSON.parse(raw));
+      } catch (error) {
+        reject(error);
+      }
+    });
+
+    req.on("error", reject);
+  });
 }
 
 export default async function handler(req, res) {
