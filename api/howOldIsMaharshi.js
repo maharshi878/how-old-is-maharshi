@@ -10,10 +10,59 @@ const BIRTHDAY_DAY = 2;
 
 const BIRTH = new Date("2010-11-02T09:15:00+05:30");
 
-global.testBirthdayMode =
-  global.testBirthdayMode || false;
+const COOKIE_NAME = "birthday_mode";
+const COOKIE_VALUE = "enabled";
+
+function getCookieValue(cookieHeader, name) {
+  if (!cookieHeader) {
+    return undefined;
+  }
+
+  const cookies = cookieHeader.split(";");
+  for (const cookie of cookies) {
+    const [key, ...rest] = cookie.trim().split("=");
+    if (key === name) {
+      return decodeURIComponent(rest.join("="));
+    }
+  }
+
+  return undefined;
+}
+
+function buildCookie(name, value, options = {}) {
+  const parts = [`${name}=${encodeURIComponent(value)}`];
+
+  if (options.maxAge !== undefined) {
+    parts.push(`Max-Age=${options.maxAge}`);
+  }
+
+  if (options.path) {
+    parts.push(`Path=${options.path}`);
+  }
+
+  if (options.httpOnly) {
+    parts.push("HttpOnly");
+  }
+
+  if (options.secure) {
+    parts.push("Secure");
+  }
+
+  if (options.sameSite) {
+    parts.push(`SameSite=${options.sameSite}`);
+  }
+
+  return parts.join("; ");
+}
 
 export default function handler(req, res) {
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).json({
+      message: "Method not allowed",
+    });
+  }
+
   const now = new Date();
 
   let years =
@@ -83,10 +132,25 @@ export default function handler(req, res) {
     now.getMonth() === BIRTHDAY_MONTH &&
     now.getDate() === BIRTHDAY_DAY;
 
-  const testMode =
-    global.testBirthdayMode === true;
+  const cookieValue = getCookieValue(
+    req.headers?.cookie,
+    COOKIE_NAME
+  );
 
-  global.testBirthdayMode = false;
+  const testMode = cookieValue === COOKIE_VALUE;
+
+  if (testMode) {
+    res.setHeader(
+      "Set-Cookie",
+      buildCookie(COOKIE_NAME, "", {
+        maxAge: 0,
+        path: "/api",
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+      })
+    );
+  }
 
   const isBirthday =
     actualBirthday || testMode;
