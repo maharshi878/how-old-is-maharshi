@@ -22,7 +22,12 @@ function getCookieValue(cookieHeader, name) {
   for (const cookie of cookies) {
     const [key, ...rest] = cookie.trim().split("=");
     if (key === name) {
-      return decodeURIComponent(rest.join("="));
+      const value = rest.join("=");
+      try {
+        return decodeURIComponent(value);
+      } catch (error) {
+        return value;
+      }
     }
   }
 
