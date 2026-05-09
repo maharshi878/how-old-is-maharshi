@@ -94,6 +94,7 @@ export default async function handler(req, res) {
   res.setHeader(
     "Set-Cookie",
     buildCookie(COOKIE_NAME, COOKIE_VALUE, {
+      maxAge: 300,
       path: "/api",
       httpOnly: true,
       secure: true,
