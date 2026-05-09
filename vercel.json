@@ -1,8 +1,12 @@
 {
-    "rewrites": [
-      {
-        "source": "/how-old-is-maharshi",
-        "destination": "/api/how-old-is-maharshi"
-      }
-    ]
-  }
+  "rewrites": [
+    {
+      "source": "/how-old-is-maharshi",
+      "destination": "/api/how-old-is-maharshi"
+    },
+    {
+      "source": "/howOldIsMaharshi",
+      "destination": "/api/howOldIsMaharshi"
+    }
+  ]
+}
