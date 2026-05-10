@@ -69,7 +69,15 @@ export default async function handler(req, res) {
       message: "Method not allowed",
     });
   }
-
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://www.maharshis.tech"
+  );
+  
+  res.setHeader(
+    "Access-Control-Allow-Credentials",
+    "true"
+  );
   let body;
   try {
     body = await parseJsonBody(req);
