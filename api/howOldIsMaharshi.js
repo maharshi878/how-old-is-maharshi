@@ -162,7 +162,12 @@ export default function handler(req, res) {
 
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "*"
+    "https://www.maharshis.tech"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Credentials",
+    "true"
   );
 
   res.setHeader(
