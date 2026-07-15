@@ -7,6 +7,10 @@
     {
       "source": "/howOldIsMaharshi",
       "destination": "/api/howOldIsMaharshi"
+    },
+    {
+      "source": "/github-stats",
+      "destination": "/api/github-stats"
     }
   ]
 }
